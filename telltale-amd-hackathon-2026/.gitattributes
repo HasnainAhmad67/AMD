@@ -1,0 +1,10 @@
+# LF everywhere so shell scripts and Dockerfiles work in Linux containers even when edited on Windows.
+* text=auto eol=lf
+# Windows batch files need CRLF or their labels break.
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.wav binary
+*.flac binary
+*.onnx binary
+*.png binary
+*.zip binary

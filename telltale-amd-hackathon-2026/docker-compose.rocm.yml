@@ -1,0 +1,56 @@
+# AMD GPU overlay (ROCm). Use on an AMD Developer Cloud instance or any Linux host with ROCm drivers.
+#
+#   # GPU training shell
+#   docker compose -f docker-compose.yml -f docker-compose.rocm.yml --profile train run --rm trainer bash
+#   # inside:  python -c "import torch; print(torch.cuda.get_device_name(0))"
+#   #          telltale-train-acoustic --machine-type fan
+#
+#   # Optional: local LLM for plain-language briefings (OpenAI-compatible vLLM server on the GPU)
+#   docker compose -f docker-compose.yml -f docker-compose.rocm.yml --profile llm up -d llm
+#   # then set TELLTALE_LLM_BASE_URL=http://llm:8001/v1 in .env and restart the api
+#
+# Only Linux hosts expose /dev/kfd and /dev/dri; this file will not work on Windows/macOS Docker Desktop.
+
+x-amd-gpu: &amd-gpu
+  devices:
+    - /dev/kfd
+    - /dev/dri
+  group_add:
+    - video
+  ipc: host
+  security_opt:
+    - seccomp=unconfined
+  cap_add:
+    - SYS_PTRACE
+
+services:
+  trainer:
+    <<: *amd-gpu
+    build:
+      context: .
+      dockerfile: ml/Dockerfile.rocm
+      args:
+        ROCM_PYTORCH_IMAGE: ${ROCM_PYTORCH_IMAGE:-rocm/pytorch:rocm6.2_ubuntu22.04_py3.10_pytorch_release_2.3.0}
+    shm_size: "16gb"
+    # To pin GPUs on a shared node, add:  environment: { HIP_VISIBLE_DEVICES: "0" }
+    # (do not set it to an empty string — that hides every GPU)
+
+  llm:
+    <<: *amd-gpu
+    profiles: ["llm"]
+    # ROCm build of vLLM. Pin a tag from https://hub.docker.com/r/rocm/vllm/tags that matches your driver.
+    image: ${VLLM_IMAGE:-rocm/vllm:latest}
+    command:
+      - vllm
+      - serve
+      - ${LLM_MODEL:-Qwen/Qwen2.5-7B-Instruct}
+      - --host=0.0.0.0
+      - --port=8001
+      - --max-model-len=8192
+    environment:
+      HF_TOKEN: ${HF_TOKEN:-}
+    volumes:
+      - ${HF_CACHE:-~/.cache/huggingface}:/root/.cache/huggingface
+    ports:
+      - "8001:8001"
+    shm_size: "16gb"
