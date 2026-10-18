@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: telltale-api
+Version: 0.1.0
+Summary: Telltale REST API: fleet health, sensor risk, machine-sound analysis.
+Requires-Python: >=3.10
+Requires-Dist: telltale-ml
+Requires-Dist: fastapi>=0.115
+Requires-Dist: pydantic>=2.7
+Requires-Dist: pydantic-settings>=2.4
+Requires-Dist: python-multipart>=0.0.9
+Requires-Dist: httpx>=0.27
+Requires-Dist: pyyaml>=6.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"
+Requires-Dist: ruff>=0.6; extra == "dev"
+Requires-Dist: uvicorn[standard]>=0.30; extra == "dev"

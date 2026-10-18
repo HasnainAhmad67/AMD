@@ -1,0 +1,5 @@
+[console_scripts]
+telltale-download = telltale_ml.datasets.download:main
+telltale-train-acoustic = telltale_ml.acoustic.train_anomaly:main
+telltale-train-bearing = telltale_ml.acoustic.train_fault:main
+telltale-train-sensor = telltale_ml.sensor.train:main

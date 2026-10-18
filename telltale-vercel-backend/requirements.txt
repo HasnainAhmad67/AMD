@@ -1,0 +1,5 @@
+-e ./ml
+-e ./apps/api
+numba==0.61.2
+llvmlite==0.44.0
+scipy==1.13.1
