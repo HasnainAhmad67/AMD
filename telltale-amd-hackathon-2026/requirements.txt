@@ -1,0 +1,8 @@
+# Vercel uses the lean inference runtime; local dev tools stay in uv's dev group.
+-e ./ml
+-e ./apps/api
+
+# Keep the librosa DSP stack compatible and materially smaller on Python 3.12.
+numba==0.61.2
+llvmlite==0.44.0
+scipy==1.13.1

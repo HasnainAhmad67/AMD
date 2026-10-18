@@ -1,0 +1,56 @@
+# Telltale — production-like stack.
+#
+#   docker compose up --build                                   # API :8000 + web :8080
+#   docker compose --profile train run --rm trainer bash        # CPU training shell
+#   docker compose --profile train run --rm trainer telltale-train-sensor
+#
+# AMD GPU training / LLM:  add  -f docker-compose.rocm.yml   (see that file)
+# Hot-reload development:  add  -f docker-compose.dev.yml
+
+name: telltale
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: prod
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      TELLTALE_MODELS_DIR: /models
+      TELLTALE_DATA_DIR: /data
+    volumes:
+      # Read-write: on first start the API trains the sensor model and saves it here.
+      - ./models:/models
+      - ./data/samples:/data/samples:ro
+      - ./data/state:/data/state          # alerts database (survives restarts)
+    ports:
+      - "${API_PORT:-8000}:8000"
+    restart: unless-stopped
+
+  web:
+    build:
+      context: apps/web
+      target: prod
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    restart: unless-stopped
+
+  # One-off training jobs (CPU). Not started by `docker compose up`.
+  trainer:
+    profiles: ["train"]
+    build:
+      context: .
+      dockerfile: ml/Dockerfile
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - ./:/workspace
+    working_dir: /workspace
+    shm_size: "2gb"

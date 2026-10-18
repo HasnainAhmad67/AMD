@@ -1,0 +1,42 @@
+{
+  // VS Code: Terminal -> Run Task... -> pick one. Same as the telltale helper commands.
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Telltale: start",
+      "type": "shell",
+      "command": "bash telltale.sh start",
+      "windows": { "command": ".\\telltale.cmd start" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Telltale: start in edit mode (live reload)",
+      "type": "shell",
+      "command": "bash telltale.sh dev",
+      "windows": { "command": ".\\telltale.cmd dev" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Telltale: stop",
+      "type": "shell",
+      "command": "bash telltale.sh stop",
+      "windows": { "command": ".\\telltale.cmd stop" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Telltale: logs",
+      "type": "shell",
+      "command": "bash telltale.sh logs",
+      "windows": { "command": ".\\telltale.cmd logs" },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Telltale: check my setup (doctor)",
+      "type": "shell",
+      "command": "bash telltale.sh doctor",
+      "windows": { "command": ".\\telltale.cmd doctor" },
+      "problemMatcher": []
+    }
+  ]
+}
