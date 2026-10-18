@@ -100,8 +100,8 @@ The application uses AMD Token Factory for:
 ### 1. Clone the repository
 
 ```bash
-git clone [https://github.com/HasnainAhmad67/AMD-DEVELOPERS-PROJECT.git](https://github.com/HasnainAhmad67/AMD-DEVELOPERS-PROJECT.git)
-cd AMD-DEVELOPERS-PROJECT
+git clone https://github.com/HasnainAhmad67/AMD
+cd AMD
 ```
 
 ### 2. Install dependencies
@@ -134,39 +134,11 @@ npm run dev
 
 ## Deployment
 
-The frontend is deployed on Vercel.
+The frontend and backend is deployed on Vercel.
 
 1. Import the GitHub repository into Vercel.
 2. Add `RADEON_API_KEY` as a server-side environment variable.
 3. Deploy the project.
 4. Verify that AI-powered features work on the live URL.
 
-## Screenshots
 
-### Dashboard
-
-_Add a screenshot here_
-
-### AI Result Explanation
-
-_Add a screenshot here_
-
-### Multi-Model Analysis
-
-_Add a screenshot here_
-
-### Evidence & Uncertainty Review
-
-_Add a screenshot here_
-
-## Team
-
-- **Hasnain Ahmad** — _Add your role, e.g. Full-Stack / AI Integration_
-- _Add teammate name and role_
-
-## Future Improvements
-
-- Add source-link verification and citation checking
-- Improve multimodal analysis for images and videos
-- Add user feedback to improve explanation quality
-- Expand uncertainty scoring across more content types
