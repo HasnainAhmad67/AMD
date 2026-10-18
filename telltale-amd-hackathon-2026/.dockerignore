@@ -1,0 +1,14 @@
+# Root build context (API + trainer images). Keep it small: datasets and models are mounted, not copied.
+.git
+.venv
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.ruff_cache
+**/*.egg-info
+data
+models
+apps/web
+ml/notebooks
+.env
+*.log

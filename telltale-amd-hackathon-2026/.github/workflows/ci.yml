@@ -1,0 +1,46 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - name: Install system libs
+        run: sudo apt-get update && sudo apt-get install -y libsndfile1
+      - name: Install (CPU torch)
+        run: |
+          uv venv --python 3.11
+          uv pip install torch --index-url https://download.pytorch.org/whl/cpu
+          uv pip install -e "./ml[train,dev]" -e "./apps/api[dev]"
+      - name: Lint
+        run: uv run --no-sync ruff check ml apps/api
+      - name: Test ML
+        run: uv run --no-sync pytest ml/tests -q
+      - name: Test API
+        run: uv run --no-sync pytest apps/api/tests -q
+
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci || npm install
+      - run: npm run build
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build images
+        run: docker compose build api web

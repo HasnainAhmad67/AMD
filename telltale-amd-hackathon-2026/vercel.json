@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm --prefix apps/web ci && VITE_API_TOKEN=demo-token-123 npm --prefix apps/web run build",
+  "functions": {
+    "index.py": {
+      "excludeFiles": "{.venv/**,**/__pycache__/**,**/*.pyc,**/tests/**,**/test/**,**/testing/**,**/benchmarks/**,**/docs/**,**/doc/**,**/.pytest_cache/**,data/raw/**,data/processed/**,data/state/**,apps/web/node_modules/**,apps/web/src/**,apps/web/public/**}"
+    }
+  }
+}
