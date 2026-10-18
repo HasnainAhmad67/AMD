@@ -1,0 +1,17 @@
+[project]
+name = "telltale-vercel-backend"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "telltale-api",
+  "numba==0.61.2",
+  "llvmlite==0.44.0",
+  "scipy==1.13.1",
+]
+
+[tool.uv.workspace]
+members = ["apps/api", "ml"]
+
+[tool.uv.sources]
+telltale-api = { workspace = true }
+telltale-ml = { workspace = true }
